@@ -31,19 +31,17 @@ class _View0State extends State<View0> {
     _view0ScrollController.addListener(() {
       //  如果滚动条高度等于页面高度
       if(_view0ScrollController.position.pixels>=_view0ScrollController.position.maxScrollExtent-50){
-        print('这里加载更多');
+        print('加载更多');
         _getData();
       }
     });
   }
 
-
   Future<void>_getData()async{
     if(flag&&hasData){
       flag = false;
       Dio dio = Dio();
-      Response response = await dio.get(
-          'http://10.0.2.2:5000/news/list?type=SDXW&page=$Page');
+      Response response = await dio.get('http://10.0.2.2:5000/news/list?type=SDXW&page=$Page');
       var newsData = response.data;
       print(response.data is Map);
       //json数据解码变成Map，不然是json字符串乱码
@@ -56,7 +54,6 @@ class _View0State extends State<View0> {
         _dataList.addAll(newsData['data']);
         Page++;
         flag = true;
-
       });
     }
   }
@@ -73,37 +70,52 @@ class _View0State extends State<View0> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Card(
-                            color: Colors.teal[400],
-                            child: ListTile(
-                              title: Text("${_dataList[index]['title']}"),
-                              subtitle: Text('${_dataList[index]['date']}'),
-                              onTap: (){
-                                print('index=$index');
-                                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
-                                  return NewsPaperContent0(MyUrl: '${_dataList[index]['link']}',);
-                                }));
-                              },
-                            ),
+                            color: Colors.white,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ListTile(
+                                  title: Text('${_dataList[index][1]}'),
+                                  subtitle: const Text('123'),
+                                ),
+                                ListTile(
+                                  title: Text("${_dataList[index]['title']}"),
+                                  subtitle: Text('${_dataList[index]['date']}'),
+                                  onTap: (){
+                                    print('index=$index');
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+                                      return NewsPaperContent0(MyUrl: '${_dataList[index]['link']}',);
+                                    }));
+                                  },
+                                ),
+                              ],
+                            )
                           ),
-                          Container(width: 200,height: 150,child: Image.network('https://i0.hdslb.com/bfs/article/c998e7b71c9b4ec6c802822983d09e7fb31c6d69.jpg@840w_473h_progressive.webp'),),
-                          Container(width: 200,height: 40,child:hasData?const Text('正在努力加载，请稍等'):const Text('我是有底线的'),),
-                          _sefl_Indicator_TabBar_To_TabBar(),
+                          SizedBox(width: 200,height: 80,child: _sefl_Indicator_TabBar_To_TabBar(),)
                         ],
                       );
                     }else{
                       return Card(
-                          margin: const EdgeInsets.all(5),
-                          color: Colors.teal[400],
-                          child: ListTile(
-                            title: Text("${_dataList[index]['title']}"),
-                            subtitle: Text("${_dataList[index]['date']}"),
-                            onTap: (){
-                              print('index=$index');
-                              Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
-                                return NewsPaperContent0(MyUrl: '${_dataList[index]['link']}',);
-                              }));
-                            },
-                          ),
+                          color: Colors.white,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ListTile(
+                                title: Text('${_dataList[index][1]}'),
+                                subtitle: const Text('123'),
+                              ),
+                              ListTile(
+                                title: Text("${_dataList[index]['title']}"),
+                                subtitle: Text('${_dataList[index]['date']}'),
+                                onTap: (){
+                                  print('index=$index');
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+                                    return NewsPaperContent0(MyUrl: '${_dataList[index]['link']}',);
+                                  }));
+                                },
+                              ),
+                            ],
+                          )
                       );
                     }
                   }

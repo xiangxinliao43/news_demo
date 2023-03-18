@@ -43,7 +43,7 @@ class _View4State extends State<View4> {
       flag = false;
       Dio dio = Dio();
       Response response = await dio.get(
-          'http://10.0.2.2:5000/news/list?type=XXGG&page=$Page');
+          'http://10.0.2.2:5000/news/list?type=XWGG&page=$Page');
       var newsData = response.data;
       print(response.data is Map);
       //json数据解码变成Map，不然是json字符串乱码
@@ -56,7 +56,6 @@ class _View4State extends State<View4> {
         _dataList.addAll(newsData['data']);
         Page++;
         flag = true;
-
       });
     }
   }

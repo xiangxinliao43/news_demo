@@ -29,7 +29,7 @@ class _BottomBar0State extends State<BottomBar0> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.yellow[100],
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         backgroundColor: Colors.blue,
         centerTitle: true,

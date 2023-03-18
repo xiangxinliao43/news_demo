@@ -56,7 +56,6 @@ class _View1State extends State<View1> {
         _dataList.addAll(newsData['data']);
         Page++;
         flag = true;
-
       });
     }
   }
