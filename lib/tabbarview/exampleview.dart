@@ -1,6 +1,7 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:news_demo/somewidget//newsContent.dart';
+import 'package:news_demo/tabbarview/news_list_entity.dart';
 
 class MyView extends StatefulWidget {
   final String type;
@@ -10,120 +11,91 @@ class MyView extends StatefulWidget {
 }
 
 class _MyViewState extends State<MyView> {
-  final List _dataList = [];
   int page = 0;
+  NewsListEntity? entity;
   bool flag = true;
-  //解决重复请求
   bool hasData = true;
-  //  这里定义一个ScrollController
+  int time=  0;
+  final List _newslistData=[];
   final ScrollController _viewScrollController = ScrollController();
+  final StreamController<List> _myStreamController = StreamController<List>.broadcast();
+
+  Future _loadData() async {
+    if (!flag) {
+      print('please waiting sometimes');
+      return;
+    }
+    flag = false;
+    try {
+      Dio dio = Dio();
+      Response response = await dio.get('http://10.0.2.2:5000/news/list?type=${widget.type}&page=$page');
+      entity = NewsListEntity.fromJson(response.data);
+      var _tempDataList = entity!.data;
+      _newslistData.addAll(_tempDataList!);
+      page++;
+      _myStreamController.add(_newslistData);
+      print('hahaha');
+      print('time=$time,page=$page');
+      time++;
+    } catch (e) {
+      print('load data error: $e');
+    } finally {
+      flag = true;
+    }
+  }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _getData();
-    //  监听滚动条事件
-    _viewScrollController.addListener((){
-      //  如果滚动条高度等于页面高度
+    _loadData();
+    _viewScrollController.addListener(() {
       if(_viewScrollController.position.pixels>=_viewScrollController.position.maxScrollExtent-50){
-        //ignore:avoid_print
-        print('加载更多');
-        _getData();
+        print('isLoading');
+        _loadData();
       }
     });
   }
 
-  Future<void>_getData()async{
-    if(flag&&hasData){
-      flag = false;
-      Dio dio = Dio();
-      Response response = await dio.get('http://10.0.2.2:5000/news/list?type=${widget.type}&page=$page');
-      var newsData = response.data;
-      //ignore:avoid_print
-      print(response.data is Map);
-      //json数据解码变成Map，不然是json字符串乱码
-      //jsonDecode
-      //ignore:avoid_print
-      print(newsData);
-      if(response.data['data'].length<13){
-        hasData = false;
-      }
-      setState((){
-        _dataList.addAll(newsData['data']);
-        page++;
-        flag = true;
-      });
-    }
-  }
-
-
   @override
   Widget build(BuildContext context) {
-    return _dataList.isNotEmpty?
-    RefreshIndicator(
-        child:ListView.builder(
-            controller: _viewScrollController,
-            itemCount:_dataList.length,
-            itemBuilder: (context,index){
-              if(index==_dataList.length-1){
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Card(
-                        color: Colors.white,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ListTile(
-                              title: Text("${_dataList[index]['title']}"),
-                              subtitle: Text('${_dataList[index]['date']}'),
-                              onTap: (){
-                                //ignore:avoid_print
-                                print('index=$index');
-                                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
-                                  return NewsPaperContent0(MyUrl:'${_dataList[index]['link']}',);
-                                }));
-                              },
-                            ),
-                          ],
-                        )
-                    ),
-                    SizedBox(width: 200,height: 80,child: circleloading(),)
-                  ],
-                );
-              }else{
-                return Card(
-                    color: Colors.white,
-                    child: Column(
+    return StreamBuilder<List>(
+        stream: _myStreamController.stream,
+        builder:(context,snapshot){
+          if(snapshot.hasData){
+            final dataList = snapshot.data;
+            return ListView.builder(
+                controller: _viewScrollController,
+                itemCount: dataList!.length,
+                itemBuilder: (context,index){
+                  if(index==dataList.length-1){
+                    return Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         ListTile(
-                          title: Text("${_dataList[index]['title']}"),
-                          subtitle: Text('${_dataList[index]['date']}'),
-                          onTap: (){
-                            //ignore:avoid_print
-                            print('index=$index');
-                            Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
-                              return NewsPaperContent0(MyUrl: '${_dataList[index]['link']}',);
-                            }));
-                          },
+                          title: Text(dataList[index].title),
+                          subtitle: Text(dataList[index].date),
                         ),
+                        circleloading(),
                       ],
-                    )
-                );
-              }
-            }
-        ),onRefresh:()async{
-      //ignore:avoid_print
-      print('下拉刷新');
-      _getData();
-    })
-        :circleloading();
+                    );
+                  }
+                  else{
+                    return ListTile(
+                      title: Text(dataList[index].title!),
+                      subtitle: Text(dataList[index].date!),
+                    );
+                  }
+                }
+            );
+          }else{
+            return const SizedBox(height: 50,width: 50,child: CircularProgressIndicator());
+          }
+        }
+    );
   }
 }
 
-//  自定义组件
+
 Widget circleloading(){
   return Center(
     child: Column(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:news_demo/somewidget//pdfView2.dart';
+
 
 class NewsPaperContent0 extends StatefulWidget {
   //  创建一个url接收不同的link
@@ -64,7 +64,7 @@ class _NewsPaperContent0State extends State<NewsPaperContent0> {
                       case 'image':
                         return Image.network(_contentList[index]['content']);
                       case 'pdf':
-                        return  PDFview(url:_contentList[index]['content']);
+                        return  Container();
                       default:
                         return Container();
                     }
