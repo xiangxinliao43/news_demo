@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:news_demo/BottomBar/bottombar0.dart';
-import 'package:news_demo/BottomBar/bottombar1.dart';
-import 'package:news_demo/BottomBar/bottombar2.dart';
-import 'package:news_demo/BottomBar/bottombar3.dart';
+import 'package:news_demo/bottombar/bottombar0.dart';
+import 'package:news_demo/bottombar/bottombar1.dart';
+import 'package:news_demo/bottombar/bottombar2.dart';
+import 'package:news_demo/bottombar/bottombar3.dart';
 
 main()=>runApp(const MyApp());
 
@@ -19,7 +19,6 @@ class MyApp extends StatelessWidget {
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
-
   @override
   State<HomePage> createState() => _HomePageState();
 }
