@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:news_demo/tabbarview/news_list_entity.dart';
+import 'package:news_demo/somewidget/glassmorphism.dart';
+import 'package:news_demo/somewidget/news_content.dart';
 
 class MyView extends StatefulWidget {
   final String type;
@@ -48,7 +50,7 @@ class _MyViewState extends State<MyView> {
   void initState() {
     super.initState();
     _loadData();
-    _viewScrollController.addListener(() {
+    _viewScrollController.addListener((){
       if(_viewScrollController.position.pixels>=_viewScrollController.position.maxScrollExtent-50){
         print('isLoading');
         _loadData();
@@ -63,32 +65,65 @@ class _MyViewState extends State<MyView> {
         builder:(context,snapshot){
           if(snapshot.hasData){
             final dataList = snapshot.data;
-            return ListView.builder(
-                controller: _viewScrollController,
-                itemCount: dataList!.length,
-                itemBuilder: (context,index){
-                  if(index==dataList.length-1){
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ListTile(
-                          title: Text(dataList[index].title),
-                          subtitle: Text(dataList[index].date),
-                        ),
-                        circleloading(),
-                      ],
-                    );
-                  }
-                  else{
-                    return ListTile(
-                      title: Text(dataList[index].title!),
-                      subtitle: Text(dataList[index].date!),
-                    );
-                  }
-                }
+            return Stack(
+              children: [
+                Image.network('https://i0.hdslb.com/bfs/article/6e174bafee9c4defcb40daf45e4bf27ec00caddc.png@942w_progressive.webp'
+                ,fit: BoxFit.cover,
+                  height: double.infinity,
+                  width: double.infinity,
+                ),
+                ListView.builder(
+                    controller: _viewScrollController,
+                    itemCount: dataList!.length,
+                    itemBuilder: (context,index){
+                      if(index==dataList.length-1){
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 5,),
+                            GlassMorphism(
+                              blur:10,
+                              opacity:0.2,
+                              child: ListTile(
+                                title: Text(dataList[index].title),
+                                subtitle: Text(dataList[index].date),
+                                onTap: (){
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+                                    return NewsPaperContent0(MyUrl: dataList[index].link);
+                                  }));
+                                },
+                              ),
+                            ),
+                            circleloading(),
+                          ],
+                        );
+                      }
+                      else{
+                        return Column(
+                          children: [
+                            const SizedBox(height: 5,),
+                            GlassMorphism(
+                              blur:20,
+                              opacity:0.1,
+                              child: ListTile(
+                                title: Text(dataList[index].title),
+                                subtitle: Text(dataList[index].date),
+                                onTap: (){
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+                                    return NewsPaperContent0(MyUrl: dataList[index].link);
+                                  }));
+                                },
+                              ),
+                            ),
+                          ],
+                        );
+                      }
+                    }
+                ),
+              ],
             );
           }else{
-            return const SizedBox(height: 50,width: 50,child: CircularProgressIndicator());
+            return circleloading();
           }
         }
     );
