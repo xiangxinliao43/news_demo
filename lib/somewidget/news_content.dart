@@ -54,15 +54,44 @@ class _NewsPaperContent0State extends State<NewsPaperContent0> {
                 itemCount: _contentList.length,
                 itemBuilder: (BuildContext context,int index){
                   if(index==0){
-                    return Text('${_contentsData['title']}',style: const TextStyle(fontSize:40,fontFamily: 'ZhiMangXing'));
+                    return Text('${_contentsData['title']}',style: const TextStyle(fontSize:40));
                   }else if(index==1){
-                    return Text('作者：${_contentsData['author']}',style: const TextStyle(fontSize:40,fontFamily: 'ZhiMangXing'));
+                    return Column(
+                      children: [
+                        ListTile(
+                            title:Text('作者：${_contentsData['author']}',style: const TextStyle(fontSize:20)),
+                            subtitle: Text('日期：${_contentsData['date']}\n阅读量：${_contentsData['visit_count']}'),
+                            leading: Image.network('https://i0.hdslb.com/bfs/article/5f54ac336f84271d3b83a1fbd800602464d86f06.jpg@942w_942h_progressive.webp'),
+                            trailing: ElevatedButton(onPressed: (){
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  bottomRight: Radius.circular(20),
+                                ),
+                              ),
+                            ),child: const Text('Fllow'),
+                            ),
+                        ),
+                        const SizedBox(height: 10,),
+                      ],
+                    );
                   }else {
                     switch (_contentList[index]['type']) {
                       case 'text':
-                        return Text(_contentList[index]['content']);
+                        return Column(
+                          children: [
+                            Text(_contentList[index]['content']),
+                            const SizedBox(height: 10,)
+                          ],
+                        );
                       case 'image':
-                        return Image.network(_contentList[index]['content']);
+                        return Column(
+                          children: [
+                            Image.network(_contentList[index]['content']),
+                          ],
+                        );
                       case 'pdf':
                         return  Container();
                       default:

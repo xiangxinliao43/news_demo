@@ -60,72 +60,79 @@ class _MyViewState extends State<MyView> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List>(
-        stream: _myStreamController.stream,
-        builder:(context,snapshot){
-          if(snapshot.hasData){
-            final dataList = snapshot.data;
-            return Stack(
-              children: [
-                Image.network('https://i0.hdslb.com/bfs/article/6e174bafee9c4defcb40daf45e4bf27ec00caddc.png@942w_progressive.webp'
-                ,fit: BoxFit.cover,
-                  height: double.infinity,
-                  width: double.infinity,
-                ),
-                ListView.builder(
-                    controller: _viewScrollController,
-                    itemCount: dataList!.length,
-                    itemBuilder: (context,index){
-                      if(index==dataList.length-1){
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const SizedBox(height: 5,),
-                            GlassMorphism(
-                              blur:10,
-                              opacity:0.2,
-                              child: ListTile(
-                                title: Text(dataList[index].title),
-                                subtitle: Text(dataList[index].date),
-                                onTap: (){
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
-                                    return NewsPaperContent0(MyUrl: dataList[index].link);
-                                  }));
-                                },
+    return RefreshIndicator(
+      child: StreamBuilder<List>(
+          stream: _myStreamController.stream,
+          builder:(context,snapshot){
+            if(snapshot.hasData){
+              final dataList = snapshot.data;
+              return Stack(
+                children: [
+                  Image.network('https://i0.hdslb.com/bfs/article/6e174bafee9c4defcb40daf45e4bf27ec00caddc.png@942w_progressive.webp'
+                  ,fit: BoxFit.cover,
+                    height: double.infinity,
+                    width: double.infinity,
+                  ),
+                  ListView.builder(
+                      controller: _viewScrollController,
+                      itemCount: dataList!.length,
+                      itemBuilder: (context,index){
+                        if(index==dataList.length-1){
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const SizedBox(height: 5,),
+                              GlassMorphism(
+                                blur:10,
+                                opacity:0.2,
+                                child: ListTile(
+                                  title: Text(dataList[index].title),
+                                  subtitle: Text(dataList[index].date),
+                                  onTap: (){
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+                                      return NewsPaperContent0(MyUrl: dataList[index].link);
+                                    }));
+                                  },
+                                ),
                               ),
-                            ),
-                            circleloading(),
-                          ],
-                        );
-                      }
-                      else{
-                        return Column(
-                          children: [
-                            const SizedBox(height: 5,),
-                            GlassMorphism(
-                              blur:20,
-                              opacity:0.1,
-                              child: ListTile(
-                                title: Text(dataList[index].title),
-                                subtitle: Text(dataList[index].date),
-                                onTap: (){
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
-                                    return NewsPaperContent0(MyUrl: dataList[index].link);
-                                  }));
-                                },
+                              circleloading(),
+                            ],
+                          );
+                        }
+                        else{
+                          return Column(
+                            children: [
+                              const SizedBox(height: 5,),
+                              GlassMorphism(
+                                blur:20,
+                                opacity:0.1,
+                                child: ListTile(
+                                  title: Text(dataList[index].title),
+                                  subtitle: Text(dataList[index].date),
+                                  onTap: (){
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
+                                      return NewsPaperContent0(MyUrl: dataList[index].link);
+                                    }));
+                                  },
+                                ),
                               ),
-                            ),
-                          ],
-                        );
+                            ],
+                          );
+                        }
                       }
-                    }
-                ),
-              ],
-            );
-          }else{
-            return circleloading();
+                  ),
+                ],
+              );
+            }else{
+              return circleloading();
+            }
           }
-        }
+      ),
+      onRefresh: ()async{
+        _loadData();
+        //ignore:avoid_print
+        print('下拉刷新');
+      },
     );
   }
 }
