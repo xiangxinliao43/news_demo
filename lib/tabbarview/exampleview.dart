@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:news_demo/tabbarview/news_list_entity.dart';
-import 'package:news_demo/somewidget/glassmorphism.dart';
-import 'package:news_demo/somewidget/news_content.dart';
+import 'package:news_demo/newscontent/news_content.dart';
+import 'package:news_demo/selfwidget/witgt_self.dart';
 
 class MyView extends StatefulWidget {
   final String type;
@@ -13,7 +13,7 @@ class MyView extends StatefulWidget {
 }
 
 class _MyViewState extends State<MyView> {
-  int page = 0;
+  int page = 1;
   NewsListEntity? entity;
   bool flag = true;
   bool hasData = true;
@@ -28,9 +28,10 @@ class _MyViewState extends State<MyView> {
       return;
     }
     flag = false;
+    int retryCount = 0; // 记录重试次数
     try {
       Dio dio = Dio();
-      Response response = await dio.get('http://10.0.2.2:5000/news/list?type=${widget.type}&page=$page');
+      Response response = await dio.get('http://118.195.147.37:5672/news/list?type=${widget.type}&page=$page');
       entity = NewsListEntity.fromJson(response.data);
       var _tempDataList = entity!.data;
       _newslistData.addAll(_tempDataList!);
@@ -41,6 +42,25 @@ class _MyViewState extends State<MyView> {
       time++;
     } catch (e) {
       print('load data error: $e');
+      while (retryCount < 100) { // 最多重试 100 次
+        await Future.delayed(Duration(milliseconds: 100)); // 延迟500毫秒再重试
+        try {
+          Dio dio = Dio();
+          Response response = await dio.get('http://118.195.147.37:5672/news/list?type=${widget.type}&page=$page');
+          entity = NewsListEntity.fromJson(response.data);
+          var _tempDataList = entity!.data;
+          _newslistData.addAll(_tempDataList!);
+          page++;
+          _myStreamController.add(_newslistData);
+          print('hahaha');
+          print('time=$time,page=$page');
+          time++;
+          break; // 请求成功后跳出while循环
+        } catch (e) {
+          print('load data error: $e');
+          retryCount++;
+        }
+      }
     } finally {
       flag = true;
     }
@@ -95,7 +115,7 @@ class _MyViewState extends State<MyView> {
                                   },
                                 ),
                               ),
-                              circleloading(),
+                              mw_cumtNewsTitleText(),
                             ],
                           );
                         }
@@ -124,7 +144,7 @@ class _MyViewState extends State<MyView> {
                 ],
               );
             }else{
-              return circleloading();
+              return mw_cumtNewsTitleText();
             }
           }
       ),
@@ -135,18 +155,4 @@ class _MyViewState extends State<MyView> {
       },
     );
   }
-}
-
-
-Widget circleloading(){
-  return Center(
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        CircularProgressIndicator(),
-        SizedBox(height: 10,),
-        Text('Loading...'),
-      ],
-    ),
-  );
 }

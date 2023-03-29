@@ -1,94 +1,85 @@
 import 'package:flutter/material.dart';
-import 'package:news_demo/tabbarview/view0.dart';
-import 'package:news_demo/tabbarview/view1.dart';
-import 'package:news_demo/tabbarview/view2.dart';
-import 'package:news_demo/tabbarview/view3.dart';
-import 'package:news_demo/tabbarview/view4.dart';
-import 'package:news_demo/tabbarview/view5.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
+import '../tabbarview/exampleview.dart';
+import 'package:news_demo/selfwidget/witgt_self.dart';
 
 class BottomBar0 extends StatefulWidget {
   const BottomBar0({Key? key}) : super(key: key);
   @override
   State<BottomBar0> createState() => _BottomBar0State();
 }
-// Colorize Colors
-const _colorizeColors = [
-  Colors.purple,
-  Colors.blue,
-  Colors.yellow,
-  Colors.red,
-];
 
 class _BottomBar0State extends State<BottomBar0> with SingleTickerProviderStateMixin{
   late TabController _tabController;
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _tabController=TabController(length: 6, vsync: this);
-    //  vsync:this
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        centerTitle: true,
-        title: AnimatedTextKit(
-          animatedTexts: [
-            ColorizeAnimatedText('矿大新闻', textStyle: TextStyle(
-              color: Colors.blue[900],
-              fontFamily: 'ZhiMangXing',
-              fontSize: 40
-            ), colors: _colorizeColors),
-            ColorizeAnimatedText('CUMT NEWS', textStyle: TextStyle(
-                color: Colors.blue[900],
-                fontSize: 20
-            ), colors: _colorizeColors),
-          ],
-          repeatForever: true,
-        ),
-        bottom: TabBar(
-          isScrollable: true,// 滚动Bar
-          indicatorColor: Colors.red[900],
-          indicatorPadding: const EdgeInsets.all(4),
-          controller: _tabController,
-          unselectedLabelColor: Colors.blue[900],
-          labelColor:Colors.red[900],
-          tabs: const [
-            Tab(child: Text('视点新闻',style:TextStyle(fontFamily: 'ZhiMangXing',fontSize: 20),),),
-            Tab(child: Text('学术聚焦',style:TextStyle(fontFamily: 'ZhiMangXing',fontSize: 20),),),
-            Tab(child: Text('学术报告',style:TextStyle(fontFamily: 'ZhiMangXing',fontSize: 20),),),
-            Tab(child: Text('人文课堂',style:TextStyle(fontFamily: 'ZhiMangXing',fontSize: 20),),),
-            Tab(child: Text('信息公告',style:TextStyle(fontFamily: 'ZhiMangXing',fontSize: 20),),),
-            Tab(child: Text('校园咨询',style:TextStyle(fontFamily: 'ZhiMangXing',fontSize: 20),),),
-          ],
-        ),
-        leading: const Icon(Icons.fiber_new_rounded),
-        actions: [
-          IconButton(onPressed: (){}, icon: const Icon(Icons.local_fire_department_rounded),),
-          IconButton(onPressed: (){}, icon: const Icon(Icons.search)),
-        ],
-      ),
-      body: Stack(
-        children: [
-          TabBarView(
-            controller: _tabController,
-            children:const [
-              View0(),
-              View1(),
-              View2(),
-              View3(),
-              View4(),
-              View5(),
-            ],
-          ),
-        ],
-      ),
+      appBar: appBar(_tabController),
+      body: body(_tabController),
     );
   }
 }
-//just改下文件名称
+
+
+
+// appBar
+AppBar appBar(TabController tabController){
+  List ntype = ['视点新闻','学术聚焦','学术报告','人文课堂','信息公告','校园咨询'];
+  return AppBar(
+    toolbarHeight: 40.0,
+    backgroundColor: Colors.blue[900],
+    centerTitle: true,
+    title:  SizedBox(
+        height: 33,
+        child: mw_search()
+    ),
+    bottom: PreferredSize(
+      preferredSize: const Size.fromHeight(40),
+      child: SizedBox(
+        height: 35,
+        child: Material(
+          color: Colors.white,
+          child: TabBar(
+            isScrollable: true,
+            indicatorColor: Colors.red[900],
+            labelColor:Colors.red[900],
+            unselectedLabelColor: Colors.blue[900],
+            indicatorPadding: const EdgeInsets.all(4),
+            controller: tabController,
+            tabs: [
+              for (var ntype in ['视点新闻','学术聚焦','学术报告','人文课堂','信息公告','校园咨询'])
+                Tab(child: mw_tbt(ntype,true))
+            ],
+          ),
+        ),
+      ),
+    ),
+    leading: const Icon(Icons.fiber_new_rounded),
+    actions: [
+      IconButton(onPressed: (){}, icon: const Icon(Icons.local_fire_department_rounded),),
+      IconButton(onPressed: (){}, icon: const Icon(Icons.dark_mode_outlined)),
+    ],
+  );
+}
+
+
+//body
+Stack body(TabController tabController){
+  return Stack(
+    children: [
+      TabBarView(
+        controller: tabController,
+        children:[
+          for (var type in ['SDXW', 'XSJJ', 'XSBG', 'RWJT', 'XWGG', 'SYKX'])
+            MyView(type: type),
+        ],
+      ),
+    ],
+  );
+}
+

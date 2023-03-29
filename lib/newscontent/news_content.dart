@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-
+import 'package:news_demo/selfwidget/witgt_self.dart';
 
 class NewsPaperContent0 extends StatefulWidget {
   //  创建一个url接收不同的link
@@ -23,7 +23,7 @@ class _NewsPaperContent0State extends State<NewsPaperContent0> {
   var _contentsData;
 
   getData()async{
-    Response response = await Dio().get('http://10.0.2.2:5000/news/content?link=${widget.MyUrl}');
+    Response response = await Dio().get('http://118.195.147.37:5672/news/content?link=${widget.MyUrl}');
     print(response.data is Map);
     var _contentsContent = response.data['contents'];
     _contentsData = response.data;
@@ -58,22 +58,7 @@ class _NewsPaperContent0State extends State<NewsPaperContent0> {
                   }else if(index==1){
                     return Column(
                       children: [
-                        ListTile(
-                            title:Text('作者：${_contentsData['author']}',style: const TextStyle(fontSize:20)),
-                            subtitle: Text('日期：${_contentsData['date']}\n阅读量：${_contentsData['visit_count']}'),
-                            leading: Image.network('https://i0.hdslb.com/bfs/article/5f54ac336f84271d3b83a1fbd800602464d86f06.jpg@942w_942h_progressive.webp'),
-                            trailing: ElevatedButton(onPressed: (){
-                            },
-                            style: ElevatedButton.styleFrom(
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  bottomRight: Radius.circular(20),
-                                ),
-                              ),
-                            ),child: const Text('Fllow'),
-                            ),
-                        ),
+                        author(_contentsData),
                         const SizedBox(height: 10,),
                       ],
                     );
@@ -101,13 +86,27 @@ class _NewsPaperContent0State extends State<NewsPaperContent0> {
                 }
             ),
           )
-          :Center(
-           child: Container(
-            height: 300,
-            width: 300,
-              child: Image.network('https://i0.hdslb.com/bfs/article/05722d579c8cedd3c859e31d3b4302fd3718706e.jpg@300w_300h_progressive.webp'),
-        ),
-    ),
+          :Center(child: mw_cumtNewsTitleText()),
     );
   }
+}
+
+
+ListTile author(Map m){
+  return ListTile(
+    title:Text('作者：${m['author']}',style: const TextStyle(fontSize:20)),
+    subtitle: Text('日期：${m['date']}\n阅读量：${m['visit_count']}'),
+    leading: Image.network('https://i0.hdslb.com/bfs/article/5f54ac336f84271d3b83a1fbd800602464d86f06.jpg@942w_942h_progressive.webp'),
+    trailing: ElevatedButton(onPressed: (){
+    },
+      style: ElevatedButton.styleFrom(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            bottomRight: Radius.circular(20),
+          ),
+        ),
+      ),child: const Text('Follow'),
+    ),
+  );
 }

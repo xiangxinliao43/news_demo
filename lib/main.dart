@@ -25,7 +25,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _currentIndexbottomBar = 0;
-  //  buttomNavigationBar要用到的页面指示
   final List<Widget> _bottomBar = const [
     BottomBar0(),
     BottomBar1(),
@@ -39,7 +38,6 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.yellow[100],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndexbottomBar,
-        //  这里的index获取当前页面的索引值
         onTap: (index){
           setState(() {
             _currentIndexbottomBar = index;
