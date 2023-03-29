@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'dart:ui';
+import 'package:news_demo/unifyscreen.dart';
 
 //闪光标题
 const _colorizeColors = [
@@ -17,7 +18,7 @@ Widget mw_cumtNewsTitleText(){
         ColorizeAnimatedText('矿大新闻', textStyle: TextStyle(
             color: Colors.blue[900],
             fontFamily: 'ZhiMangXing',
-            fontSize: 40
+            fontSize: SU.sp(50)
         ), colors: _colorizeColors),
         ColorizeAnimatedText('CUMT NEWS', textStyle: TextStyle(
             color: Colors.blue[900],
@@ -48,7 +49,7 @@ Widget mw_circleloading(){
 //搜索框
 Widget mw_search(){
   return TextField(
-    style: TextStyle(fontSize: 16.0),
+    style: TextStyle(fontSize: SU.sp(20)),
     decoration: InputDecoration(
       filled: true,
       fillColor: Colors.white,
@@ -98,33 +99,6 @@ class _GlassMorphismState extends State<GlassMorphism> {
 }
 
 
-//tabBar的效果
- List<Color>_colorizeColors1 = [
-  Colors.blue[900]!,
-  Colors.blue[700]!,
-  Colors.blue[400]!,
-  Colors.blue[200]!,
-];
-Widget mw_tbt(String t,bool i){
-  return Center(
-    child: AnimatedTextKit(
-      pause: Duration(microseconds: 500),
-      animatedTexts: [
-        ColorizeAnimatedText(t, textStyle: TextStyle(
-            color: Colors.blue[900],
-            fontFamily: 'ZhiMangXing',
-            fontSize: 20
-        ), colors: _colorizeColors1, speed: Duration(milliseconds: 500)),
-        ColorizeAnimatedText(t, textStyle: TextStyle(
-          color: Colors.blue[900],
-          fontSize: 20,
-          fontFamily: 'ZhiMangXing',
-        ), colors: _colorizeColors1, speed: Duration(milliseconds: 500)),
-      ],
-      repeatForever: true,
-    ),
-  );
-}
 
 
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../tabbarview/exampleview.dart';
 import 'package:news_demo/selfwidget/witgt_self.dart';
+import 'package:news_demo/unifyscreen.dart';
 
 class BottomBar0 extends StatefulWidget {
   const BottomBar0({Key? key}) : super(key: key);
@@ -10,6 +11,7 @@ class BottomBar0 extends StatefulWidget {
 
 class _BottomBar0State extends State<BottomBar0> with SingleTickerProviderStateMixin{
   late TabController _tabController;
+  List ntype = ['视点新闻','学术聚焦','学术报告','人文课堂','信息公告','校园咨询'];
   @override
   void initState() {
     super.initState();
@@ -18,20 +20,18 @@ class _BottomBar0State extends State<BottomBar0> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.grey[200],
       appBar: appBar(_tabController),
       body: body(_tabController),
     );
   }
 }
 
-
-
 // appBar
 AppBar appBar(TabController tabController){
   List ntype = ['视点新闻','学术聚焦','学术报告','人文课堂','信息公告','校园咨询'];
   return AppBar(
-    toolbarHeight: 40.0,
+    toolbarHeight: SU.h(40),
     backgroundColor: Colors.blue[900],
     centerTitle: true,
     title:  SizedBox(
@@ -39,7 +39,7 @@ AppBar appBar(TabController tabController){
         child: mw_search()
     ),
     bottom: PreferredSize(
-      preferredSize: const Size.fromHeight(40),
+      preferredSize: Size.fromHeight(SU.h(40)),
       child: SizedBox(
         height: 35,
         child: Material(
@@ -53,7 +53,13 @@ AppBar appBar(TabController tabController){
             controller: tabController,
             tabs: [
               for (var ntype in ['视点新闻','学术聚焦','学术报告','人文课堂','信息公告','校园咨询'])
-                Tab(child: mw_tbt(ntype,true))
+                Tab(child: Text(
+                  ntype,style: TextStyle(
+                  color: Colors.blue[900],
+                  fontSize: SU.sp(20),
+                  fontFamily: 'ZhiMangXing',
+                ),
+                ),)
             ],
           ),
         ),
@@ -66,7 +72,6 @@ AppBar appBar(TabController tabController){
     ],
   );
 }
-
 
 //body
 Stack body(TabController tabController){

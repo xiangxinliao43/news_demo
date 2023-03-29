@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:news_demo/selfwidget/witgt_self.dart';
-
+import 'package:news_demo/unifyscreen.dart';
 class NewsPaperContent0 extends StatefulWidget {
   //  创建一个url接收不同的link
   //  构造函数写入传值的URL
@@ -22,16 +22,27 @@ class _NewsPaperContent0State extends State<NewsPaperContent0> {
   Map _contentMap = {};
   var _contentsData;
 
-  getData()async{
-    Response response = await Dio().get('http://118.195.147.37:5672/news/content?link=${widget.MyUrl}');
-    print(response.data is Map);
-    var _contentsContent = response.data['contents'];
-    _contentsData = response.data;
-    setState(() {
-      _contentList = _contentsContent;
-      _contentMap = response.data;
-    });
+  getData() async {
+    int retryCount = 0;
+    bool success = false;
+    while (!success && retryCount < 20) {
+      try {
+        Response response = await Dio().get('http://118.195.147.37:5672/news/content?link=${widget.MyUrl}');
+        print(response.data is Map);
+        var _contentsContent = response.data['contents'];
+        _contentsData = response.data;
+        setState(() {
+          _contentList = _contentsContent;
+          _contentMap = response.data;
+        });
+        success = true;
+      } catch (e) {
+        print('Error fetching data: $e');
+        retryCount++;
+      }
+    }
   }
+
 
   @override
   void initState() {
@@ -49,17 +60,17 @@ class _NewsPaperContent0State extends State<NewsPaperContent0> {
       ),
       body: _contentList.isNotEmpty?
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(SU.h(20)),
             child: ListView.builder(
                 itemCount: _contentList.length,
                 itemBuilder: (BuildContext context,int index){
                   if(index==0){
-                    return Text('${_contentsData['title']}',style: const TextStyle(fontSize:40));
+                    return Text('${_contentsData['title']}',style: const TextStyle(fontSize:35));
                   }else if(index==1){
                     return Column(
                       children: [
                         author(_contentsData),
-                        const SizedBox(height: 10,),
+                        SizedBox(height: SU.h(20),),
                       ],
                     );
                   }else {
@@ -68,7 +79,7 @@ class _NewsPaperContent0State extends State<NewsPaperContent0> {
                         return Column(
                           children: [
                             Text(_contentList[index]['content']),
-                            const SizedBox(height: 10,)
+                            SizedBox(height: SU.h(20),)
                           ],
                         );
                       case 'image':

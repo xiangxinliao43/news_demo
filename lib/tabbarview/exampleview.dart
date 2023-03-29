@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:news_demo/tabbarview/news_list_entity.dart';
 import 'package:news_demo/newscontent/news_content.dart';
 import 'package:news_demo/selfwidget/witgt_self.dart';
+import 'package:news_demo/unifyscreen.dart';
 
 class MyView extends StatefulWidget {
   final String type;
@@ -101,7 +102,7 @@ class _MyViewState extends State<MyView> {
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const SizedBox(height: 5,),
+                              SizedBox(height: SU.h(5),),
                               GlassMorphism(
                                 blur:10,
                                 opacity:0.2,
@@ -122,7 +123,7 @@ class _MyViewState extends State<MyView> {
                         else{
                           return Column(
                             children: [
-                              const SizedBox(height: 5,),
+                              SizedBox(height: SU.h(5),),
                               GlassMorphism(
                                 blur:20,
                                 opacity:0.1,
