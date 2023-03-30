@@ -55,12 +55,12 @@ class _HomePageState extends State<HomePage> {
         unselectedItemColor: Colors.blue[900],//主要用于设置item及字体颜色
         selectedItemColor: Colors.red[900],//主要用于设置item及字体颜色
         unselectedLabelStyle: const TextStyle(fontFamily:'ZhiMangXing' ),//有设置主题与unselectedItemColor时,无作用
-        selectedLabelStyle: const TextStyle(fontFamily:'ZhiMangXing' ),////有设置主题与selectedItemColor时,无作用
+        selectedLabelStyle: const TextStyle(fontFamily:'ZhiMangXing' ),//有设置主题与selectedItemColor时,无作用
         items:  const[
           BottomNavigationBarItem(icon: Icon(Icons.newspaper),label: '新闻'),
           BottomNavigationBarItem(icon: Icon(Icons.video_library),label: '视频'),
-          BottomNavigationBarItem(icon: Icon(Icons.sunny),label: '未定'),
-          BottomNavigationBarItem(icon: Icon(Icons.people),label: '个人'),
+          BottomNavigationBarItem(icon: Icon(Icons.chat_outlined),label: '留言板'),
+          BottomNavigationBarItem(icon: Icon(Icons.people),label: '我的'),
         ],
       ),
     );

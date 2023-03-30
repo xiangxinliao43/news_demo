@@ -5,15 +5,22 @@ import 'package:news_demo/tabbarview/news_list_entity.dart';
 import 'package:news_demo/newscontent/news_content.dart';
 import 'package:news_demo/selfwidget/witgt_self.dart';
 import 'package:news_demo/unifyscreen.dart';
+import 'package:news_demo/service/backgroundimage.dart';
+import 'dart:io';
+
+
 
 class MyView extends StatefulWidget {
+
   final String type;
   const MyView({Key? key,required this.type}) : super(key: key);
   @override
   State<MyView> createState() => _MyViewState();
+
 }
 
 class _MyViewState extends State<MyView> {
+
   int page = 1;
   NewsListEntity? entity;
   bool flag = true;
@@ -89,12 +96,30 @@ class _MyViewState extends State<MyView> {
               final dataList = snapshot.data;
               return Stack(
                 children: [
-                  Image.network('https://i0.hdslb.com/bfs/article/6e174bafee9c4defcb40daf45e4bf27ec00caddc.png@942w_progressive.webp'
-                  ,fit: BoxFit.cover,
-                    height: double.infinity,
-                    width: double.infinity,
+                  FutureBuilder(
+                    future: Utils.getImagePath(),
+                    builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+                      if (!snapshot.hasData) {
+                        return Container(); // 如果还没有保存过图片路径，则显示空容器。
+                      }
+                      return Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: FileImage(File(snapshot.data!)),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          child:Container() // 页面的其余代码。
+                      );
+                    },
                   ),
+                  // Image.network('https://i0.hdslb.com/bfs/article/6e174bafee9c4defcb40daf45e4bf27ec00caddc.png@942w_progressive.webp'
+                  // ,fit: BoxFit.cover,
+                  //   height: double.infinity,
+                  //   width: double.infinity,
+                  // ),
                   ListView.builder(
+
                       controller: _viewScrollController,
                       itemCount: dataList!.length,
                       itemBuilder: (context,index){
@@ -141,6 +166,21 @@ class _MyViewState extends State<MyView> {
                           );
                         }
                       }
+                  ),
+                  Positioned(
+                    bottom: 10,
+                    right: 10,
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        _viewScrollController.animateTo(
+                          0.0,
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.linear,
+                        );
+                      },
+                      backgroundColor: Colors.blue[900],
+                      child: const Icon(Icons.arrow_upward),
+                    ),
                   ),
                 ],
               );
