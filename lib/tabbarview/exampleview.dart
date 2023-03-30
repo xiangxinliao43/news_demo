@@ -111,7 +111,7 @@ class _MyViewState extends State<MyView> {
                                   subtitle: Text(dataList[index].date),
                                   onTap: (){
                                     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
-                                      return NewsPaperContent0(MyUrl: dataList[index].link);
+                                      return NewsPaperContent0(url: dataList[index].link);
                                     }));
                                   },
                                 ),
@@ -132,7 +132,7 @@ class _MyViewState extends State<MyView> {
                                   subtitle: Text(dataList[index].date),
                                   onTap: (){
                                     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
-                                      return NewsPaperContent0(MyUrl: dataList[index].link);
+                                      return NewsPaperContent0(url: dataList[index].link);
                                     }));
                                   },
                                 ),

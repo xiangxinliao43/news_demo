@@ -2,38 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:news_demo/selfwidget/witgt_self.dart';
 import 'package:news_demo/unifyscreen.dart';
+import '../newscontent/pdf.dart';
+
 class NewsPaperContent0 extends StatefulWidget {
-  //  创建一个url接收不同的link
-  //  构造函数写入传值的URL
-
-  final String MyUrl;
-
-  const NewsPaperContent0({Key? key,required this.MyUrl}) : super(key: key);
-
+  final String url;
+  const NewsPaperContent0({Key? key,required this.url}) : super(key: key);
   @override
   State<NewsPaperContent0> createState() => _NewsPaperContent0State();
 }
 
 class _NewsPaperContent0State extends State<NewsPaperContent0> {
 
-  //  创建一个List接收返回来的 contents 数据
-
   List _contentList = [];
-  Map _contentMap = {};
-  var _contentsData;
+  Map _contentsData = {};
+  String? pdfFlePath;
 
   getData() async {
     int retryCount = 0;
     bool success = false;
     while (!success && retryCount < 20) {
       try {
-        Response response = await Dio().get('http://118.195.147.37:5672/news/content?link=${widget.MyUrl}');
-        print(response.data is Map);
+        Response response = await Dio().get('http://118.195.147.37:5672/news/content?link=${widget.url}');
+        print(response.data is Map);//true
         var _contentsContent = response.data['contents'];
         _contentsData = response.data;
         setState(() {
           _contentList = _contentsContent;
-          _contentMap = response.data;
         });
         success = true;
       } catch (e) {
@@ -43,81 +37,80 @@ class _NewsPaperContent0State extends State<NewsPaperContent0> {
     }
   }
 
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getData();
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('nesContent'),
+        backgroundColor: Colors.blue[900],
+        title: const Text('nesContent'),
       ),
-      body: _contentList.isNotEmpty?
-          Padding(
-            padding: EdgeInsets.all(SU.h(20)),
-            child: ListView.builder(
-                itemCount: _contentList.length,
-                itemBuilder: (BuildContext context,int index){
-                  if(index==0){
-                    return Text('${_contentsData['title']}',style: const TextStyle(fontSize:35));
-                  }else if(index==1){
-                    return Column(
-                      children: [
-                        author(_contentsData),
-                        SizedBox(height: SU.h(20),),
-                      ],
-                    );
-                  }else {
-                    switch (_contentList[index]['type']) {
-                      case 'text':
-                        return Column(
-                          children: [
-                            Text(_contentList[index]['content']),
-                            SizedBox(height: SU.h(20),)
-                          ],
-                        );
-                      case 'image':
-                        return Column(
-                          children: [
-                            Image.network(_contentList[index]['content']),
-                          ],
-                        );
-                      case 'pdf':
-                        return  Container();
-                      default:
-                        return Container();
-                    }
-                  }
-                }
-            ),
-          )
-          :Center(child: mw_cumtNewsTitleText()),
+      body: _contentList.isNotEmpty ?
+      Padding(
+        padding: EdgeInsets.all(SU.h(20)),
+        child: ListView.builder(
+          itemCount: _contentList.length + 2,
+          itemBuilder: (BuildContext context, int index) {
+            if (index == 0) {
+              return Text('${_contentsData['title']}', style: const TextStyle(fontSize: 35));
+            } else if (index == 1) {
+              return Column(
+                children: [
+                  author(_contentsData),
+                  SizedBox(height: SU.h(20)),
+                ],
+              );
+            } else {
+              switch (_contentList[index - 2]['type']) {
+                case 'text':
+                  return Column(
+                    children: [
+                      Text(_contentList[index - 2]['content']),
+                      SizedBox(height: SU.h(20)),
+                    ],
+                  );
+                case 'image':
+                  return Column(
+                    children: [
+                      Image.network(_contentList[index - 2]['content']),
+                    ],
+                  );
+                case 'pdf':
+                  print('pdf');
+                  return Pdf(url:_contentList[index - 2]['content']);
+                default:
+                  return Container();
+              }
+            }
+          },
+        ),
+      )
+          : Center(child: mw_cumtNewsTitleText()),
     );
   }
-}
 
-
-ListTile author(Map m){
-  return ListTile(
-    title:Text('作者：${m['author']}',style: const TextStyle(fontSize:20)),
-    subtitle: Text('日期：${m['date']}\n阅读量：${m['visit_count']}'),
-    leading: Image.network('https://i0.hdslb.com/bfs/article/5f54ac336f84271d3b83a1fbd800602464d86f06.jpg@942w_942h_progressive.webp'),
-    trailing: ElevatedButton(onPressed: (){
-    },
-      style: ElevatedButton.styleFrom(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            bottomRight: Radius.circular(20),
+  ListTile author(Map m){
+    return ListTile(
+      title:Text('作者：${m['author']}',style: const TextStyle(fontSize:20)),
+      subtitle: Text('日期：${m['date']}\n阅读量：${m['visit_count']}'),
+      leading: Image.network('https://i0.hdslb.com/bfs/article/5f54ac336f84271d3b83a1fbd800602464d86f06.jpg@942w_942h_progressive.webp'),
+      trailing: ElevatedButton(
+        onPressed: (){},
+        style: ElevatedButton.styleFrom(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20),
+              bottomRight: Radius.circular(20),
+            ),
           ),
         ),
-      ),child: const Text('Follow'),
-    ),
-  );
+        child: const Text('Follow'),
+      ),
+    );
+  }
 }
