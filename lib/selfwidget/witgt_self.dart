@@ -84,7 +84,7 @@ class _GlassMorphismState extends State<GlassMorphism> {
         filter: ImageFilter.blur(sigmaX: widget.blur,sigmaY: widget.blur),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.red.withOpacity(widget.opacity),
+            color: Colors.lightBlueAccent.withOpacity(widget.opacity),
             borderRadius: const BorderRadius.all(Radius.circular(29)),
             border: Border.all(
               width: 1.5,
@@ -97,8 +97,6 @@ class _GlassMorphismState extends State<GlassMorphism> {
     );
   }
 }
-
-//PDFview
 
 
 

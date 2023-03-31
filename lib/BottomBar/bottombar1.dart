@@ -3,7 +3,6 @@ import 'package:news_demo/service/videoplay.dart';
 
 class BottomBar1 extends StatefulWidget {
   const BottomBar1({Key? key}) : super(key: key);
-
   @override
   State<BottomBar1> createState() => _BottomBar1State();
 }
@@ -136,8 +135,7 @@ class _BottomBar1State extends State<BottomBar1> {
           Center(
               child: Stack(
             children: [
-              ChewieVideoWidget1(
-                  'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'),
+              ChewieVideoWidget1('https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'),
               Positioned(
                 right: 5,
                 top: MediaQuery.of(context).size.height / 2 - 60,
@@ -158,6 +156,9 @@ class _BottomBar1State extends State<BottomBar1> {
   }
 }
 
+
+
+// ButtonGroup
 class ButtonGroup extends StatelessWidget {
   final bool isLiked;
   final VoidCallback onPressed;

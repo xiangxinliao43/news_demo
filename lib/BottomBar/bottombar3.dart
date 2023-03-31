@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:news_demo/unifyscreen.dart';
@@ -23,7 +22,9 @@ class _BottomBar3State extends State<BottomBar3> {
   }
 
   final ImagePicker picker = ImagePicker();
+
   bool flag = false;
+
   String? imagePath;
   //相机照片
   _pickerGallery() async {
@@ -41,6 +42,7 @@ class _BottomBar3State extends State<BottomBar3> {
 
   //获取SharedPreferences实例
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
   //读取图片路径
   Future<String?> _getImagePath() async {
     final SharedPreferences prefs = await _prefs;
@@ -87,7 +89,6 @@ class _BottomBar3State extends State<BottomBar3> {
         });
   }
 
-  @override
   @override
   void initState() {
     super.initState();
@@ -346,6 +347,7 @@ GestureDetector button(String a, IconData i, Function() onTap) {
 GestureDetector colorselect(Color c) {
   return GestureDetector(
     onTap: () {
+
       // 执行操作
     },
     child: CircleAvatar(

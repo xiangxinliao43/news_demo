@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:news_demo/bottombar/b0page/newsbefore.dart';
 import '../tabbarview/exampleview.dart';
 import 'package:news_demo/selfwidget/witgt_self.dart';
 import 'package:news_demo/unifyscreen.dart';
@@ -25,19 +26,24 @@ class _BottomBar0State extends State<BottomBar0> with SingleTickerProviderStateM
       return const FireNews();
     }));
   }
+  void toNewsBeforePage() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return const Newsbefore();
+    }));
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
-      appBar: appBar(_tabController, toFirePage),
+      appBar: appBar(_tabController, toFirePage,toNewsBeforePage),
       body: body(_tabController),
     );
   }
 }
 
 // appBar
-AppBar appBar(TabController tabController, VoidCallback toFirePage) {
+AppBar appBar(TabController tabController, VoidCallback toFirePage,VoidCallback toNewsBeforePage) {
   List ntype = ['视点新闻', '学术聚焦', '学术报告', '人文课堂', '信息公告', '校园咨询'];
   return AppBar(
     toolbarHeight: SU.h(40),
@@ -65,7 +71,12 @@ AppBar appBar(TabController tabController, VoidCallback toFirePage) {
         ),
       ),
     ),
-    leading: const Icon(Icons.fiber_new_rounded),
+    leading: IconButton(
+      icon: const Icon(Icons.history,),
+      onPressed: (){
+        toNewsBeforePage();
+      },
+    ),
     actions: [
       IconButton(
         onPressed: () {
@@ -73,7 +84,9 @@ AppBar appBar(TabController tabController, VoidCallback toFirePage) {
         },
         icon: const Icon(Icons.local_fire_department_rounded),
       ),
-      IconButton(onPressed: () {}, icon: const Icon(Icons.dark_mode_outlined)),
+      IconButton(onPressed: () {
+
+      }, icon: const Icon(Icons.dark_mode_outlined)),
     ],
   );
 }

@@ -13,6 +13,26 @@ class _BottomBar2State extends State<BottomBar2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+        child:Column(
+          children: [
+            UserAccountsDrawerHeader(
+                accountName:const Text('mirrSo'),
+                accountEmail: const Text('123@gamil.com'),
+                currentAccountPicture:ClipOval(
+                  child: Image.network('https://i0.hdslb.com/bfs/article/7b47fb1864b96c128bae7d4a0a3f07e8cedb65c0.jpg@942w_528h_progressive.webp', fit: BoxFit.cover,),),
+            ),
+            const ListTile(title: Text("Tile1"),),
+            const Divider(color: Colors.black,),
+            const ListTile(title: Text("Tile2"),),
+            const Divider(color: Colors.black,),
+            const ListTile(title: Text("Tile3"),),
+            const Divider(color: Colors.black,),
+            const ListTile(title: Text("Tile4"),),
+            const Divider(color: Colors.black,),
+          ],
+        ) ,
+      ),
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
         centerTitle: true,

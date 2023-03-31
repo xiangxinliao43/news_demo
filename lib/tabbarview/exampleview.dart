@@ -1,12 +1,13 @@
+import 'dart:io';
 import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:news_demo/unifyscreen.dart';
 import 'package:news_demo/tabbarview/news_list_entity.dart';
 import 'package:news_demo/newscontent/news_content.dart';
 import 'package:news_demo/selfwidget/witgt_self.dart';
-import 'package:news_demo/unifyscreen.dart';
 import 'package:news_demo/service/backgroundimage.dart';
-import 'dart:io';
+
 
 class MyView extends StatefulWidget {
   final String type;
@@ -23,31 +24,28 @@ class _MyViewState extends State<MyView> {
   int time = 0;
   final List _newslistData = [];
   final ScrollController _viewScrollController = ScrollController();
-  final StreamController<List> _myStreamController =
-      StreamController<List>.broadcast();
+  final StreamController<List> _myStreamController = StreamController<List>.broadcast();
 
   Future _loadData() async {
-    if (!flag) {
+    if (!flag){
       print('please waiting sometimes');
       return;
     }
     flag = false;
-    int retryCount = 0; // 记录重试次数
+    int retryCount = 0; // 记录重复请求次数
     try {
       Dio dio = Dio();
-      Response response = await dio.get(
-          'http://118.195.147.37:5672/news/list?type=${widget.type}&page=$page');
+      Response response = await dio.get('http://118.195.147.37:5672/news/list?type=${widget.type}&page=$page');
       entity = NewsListEntity.fromJson(response.data);
       var _tempDataList = entity!.data;
       _newslistData.addAll(_tempDataList!);
       page++;
       _myStreamController.add(_newslistData);
-      print('hahaha');
       print('time=$time,page=$page');
       time++;
     } catch (e) {
       print('load data error: $e');
-      while (retryCount < 100) {
+      while (retryCount < 100 && flag == false) {
         // 最多重试 100 次
         await Future.delayed(Duration(milliseconds: 100)); // 延迟500毫秒再重试
         try {
@@ -72,6 +70,7 @@ class _MyViewState extends State<MyView> {
       flag = true;
     }
   }
+
 
   @override
   void initState() {
@@ -110,15 +109,10 @@ class _MyViewState extends State<MyView> {
                               fit: BoxFit.cover,
                             ),
                           ),
-                          child: Container() // 页面的其余代码。
+                          child: Container(),
                           );
                     },
                   ),
-                  // Image.network('https://i0.hdslb.com/bfs/article/6e174bafee9c4defcb40daf45e4bf27ec00caddc.png@942w_progressive.webp'
-                  // ,fit: BoxFit.cover,
-                  //   height: double.infinity,
-                  //   width: double.infinity,
-                  // ),
                   ListView.builder(
                       controller: _viewScrollController,
                       itemCount: dataList!.length,
@@ -182,7 +176,7 @@ class _MyViewState extends State<MyView> {
                       onPressed: () {
                         _viewScrollController.animateTo(
                           0.0,
-                          duration: const Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 400),
                           curve: Curves.linear,
                         );
                       },
@@ -204,3 +198,7 @@ class _MyViewState extends State<MyView> {
     );
   }
 }
+
+
+
+
