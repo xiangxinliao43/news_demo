@@ -11,7 +11,7 @@ class BottomBar1 extends StatefulWidget {
 class _BottomBar1State extends State<BottomBar1> {
   bool isLiked = false;
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[900],
@@ -23,24 +23,25 @@ class _BottomBar1State extends State<BottomBar1> {
         children: [
           Center(
               child: Stack(
-                children: [
-                  ChewieVideoWidget1('https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'),
-                  Positioned(
-                    right: 5,
-                    top: MediaQuery.of(context).size.height / 2 - 60,
-                    child: ButtonGroup(
-                      isLiked: isLiked,
-                      onPressed: () {
-                        setState(() {
-                          isLiked = !isLiked;
-                        });
-                      },
-                    ),
-                  )
-                ],
+            children: [
+              ChewieVideoWidget1(
+                  'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'),
+              Positioned(
+                right: 5,
+                top: MediaQuery.of(context).size.height / 2 - 60,
+                child: ButtonGroup(
+                  isLiked: isLiked,
+                  onPressed: () {
+                    setState(() {
+                      isLiked = !isLiked;
+                    });
+                  },
+                ),
               )
-          ),
-          Center(child: Stack(
+            ],
+          )),
+          Center(
+              child: Stack(
             children: [
               ChewieVideoWidget1('https://v-cdn.zjol.com.cn/276982.mp4'),
               Positioned(
@@ -57,9 +58,11 @@ class _BottomBar1State extends State<BottomBar1> {
               )
             ],
           )),
-          Center(child: Stack(
+          Center(
+              child: Stack(
             children: [
-              ChewieVideoWidget1('https://media.w3.org/2010/05/sintel/trailer.mp4'),
+              ChewieVideoWidget1(
+                  'https://media.w3.org/2010/05/sintel/trailer.mp4'),
               Positioned(
                 right: 5,
                 top: MediaQuery.of(context).size.height / 2 - 60,
@@ -74,7 +77,8 @@ class _BottomBar1State extends State<BottomBar1> {
               )
             ],
           )),
-          Center(child: Stack(
+          Center(
+              child: Stack(
             children: [
               ChewieVideoWidget1('https://v-cdn.zjol.com.cn/276989.mp4'),
               Positioned(
@@ -91,9 +95,11 @@ class _BottomBar1State extends State<BottomBar1> {
               )
             ],
           )),
-          Center(child: Stack(
+          Center(
+              child: Stack(
             children: [
-              ChewieVideoWidget1('https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'),
+              ChewieVideoWidget1(
+                  'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'),
               Positioned(
                 right: 5,
                 top: MediaQuery.of(context).size.height / 2 - 60,
@@ -108,9 +114,11 @@ class _BottomBar1State extends State<BottomBar1> {
               )
             ],
           )),
-          Center(child: Stack(
+          Center(
+              child: Stack(
             children: [
-              ChewieVideoWidget1('https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'),
+              ChewieVideoWidget1(
+                  'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'),
               Positioned(
                 right: 5,
                 top: MediaQuery.of(context).size.height / 2 - 60,
@@ -125,9 +133,11 @@ class _BottomBar1State extends State<BottomBar1> {
               )
             ],
           )),
-          Center(child: Stack(
+          Center(
+              child: Stack(
             children: [
-              ChewieVideoWidget1('https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'),
+              ChewieVideoWidget1(
+                  'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'),
               Positioned(
                 right: 5,
                 top: MediaQuery.of(context).size.height / 2 - 60,
@@ -148,7 +158,6 @@ class _BottomBar1State extends State<BottomBar1> {
   }
 }
 
-
 class ButtonGroup extends StatelessWidget {
   final bool isLiked;
   final VoidCallback onPressed;
@@ -163,7 +172,10 @@ class ButtonGroup extends StatelessWidget {
       children: [
         IconButton(
           iconSize: 30,
-          icon: const Icon(Icons.share,color: Colors.white,),
+          icon: const Icon(
+            Icons.share,
+            color: Colors.white,
+          ),
           onPressed: () {},
         ),
         const SizedBox(
@@ -171,7 +183,10 @@ class ButtonGroup extends StatelessWidget {
         ),
         IconButton(
           iconSize: 30,
-          icon: const Icon(Icons.comment,color: Colors.white,),
+          icon: const Icon(
+            Icons.comment,
+            color: Colors.white,
+          ),
           onPressed: () {},
         ),
         const SizedBox(

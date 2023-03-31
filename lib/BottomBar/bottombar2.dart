@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:news_demo/service/backgroundimage.dart';
 import 'dart:io';
 
-
 class BottomBar2 extends StatefulWidget {
   const BottomBar2({Key? key}) : super(key: key);
 
@@ -30,13 +29,15 @@ class _BottomBar2State extends State<BottomBar2> {
                 child: Container(
                   color: Colors.blue,
                   child: const Center(
-                    child: Text('登陆后查看',style: TextStyle(fontSize: 40),),
+                    child: Text(
+                      '登陆后查看',
+                      style: TextStyle(fontSize: 40),
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-
           Positioned.fill(
             child: FutureBuilder(
               future: Utils.getImagePath(),
@@ -45,13 +46,13 @@ class _BottomBar2State extends State<BottomBar2> {
                   return Container(); // 如果还没有保存过图片路径，则显示空容器。
                 }
                 return Container(
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: FileImage(File(snapshot.data!)),
-                        fit: BoxFit.cover,
-                      ),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: FileImage(File(snapshot.data!)),
+                      fit: BoxFit.cover,
                     ),
-                    child:Container(),
+                  ),
+                  child: Container(),
                 );
               },
             ),

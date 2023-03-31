@@ -8,27 +8,23 @@ import 'package:news_demo/unifyscreen.dart';
 import 'package:news_demo/service/backgroundimage.dart';
 import 'dart:io';
 
-
-
 class MyView extends StatefulWidget {
-
   final String type;
-  const MyView({Key? key,required this.type}) : super(key: key);
+  const MyView({Key? key, required this.type}) : super(key: key);
   @override
   State<MyView> createState() => _MyViewState();
-
 }
 
 class _MyViewState extends State<MyView> {
-
   int page = 1;
   NewsListEntity? entity;
   bool flag = true;
   bool hasData = true;
-  int time=  0;
-  final List _newslistData=[];
+  int time = 0;
+  final List _newslistData = [];
   final ScrollController _viewScrollController = ScrollController();
-  final StreamController<List> _myStreamController = StreamController<List>.broadcast();
+  final StreamController<List> _myStreamController =
+      StreamController<List>.broadcast();
 
   Future _loadData() async {
     if (!flag) {
@@ -39,7 +35,8 @@ class _MyViewState extends State<MyView> {
     int retryCount = 0; // 记录重试次数
     try {
       Dio dio = Dio();
-      Response response = await dio.get('http://118.195.147.37:5672/news/list?type=${widget.type}&page=$page');
+      Response response = await dio.get(
+          'http://118.195.147.37:5672/news/list?type=${widget.type}&page=$page');
       entity = NewsListEntity.fromJson(response.data);
       var _tempDataList = entity!.data;
       _newslistData.addAll(_tempDataList!);
@@ -50,11 +47,13 @@ class _MyViewState extends State<MyView> {
       time++;
     } catch (e) {
       print('load data error: $e');
-      while (retryCount < 100) { // 最多重试 100 次
+      while (retryCount < 100) {
+        // 最多重试 100 次
         await Future.delayed(Duration(milliseconds: 100)); // 延迟500毫秒再重试
         try {
           Dio dio = Dio();
-          Response response = await dio.get('http://118.195.147.37:5672/news/list?type=${widget.type}&page=$page');
+          Response response = await dio.get(
+              'http://118.195.147.37:5672/news/list?type=${widget.type}&page=$page');
           entity = NewsListEntity.fromJson(response.data);
           var _tempDataList = entity!.data;
           _newslistData.addAll(_tempDataList!);
@@ -78,8 +77,9 @@ class _MyViewState extends State<MyView> {
   void initState() {
     super.initState();
     _loadData();
-    _viewScrollController.addListener((){
-      if(_viewScrollController.position.pixels>=_viewScrollController.position.maxScrollExtent-50){
+    _viewScrollController.addListener(() {
+      if (_viewScrollController.position.pixels >=
+          _viewScrollController.position.maxScrollExtent - 50) {
         print('isLoading');
         _loadData();
       }
@@ -91,14 +91,15 @@ class _MyViewState extends State<MyView> {
     return RefreshIndicator(
       child: StreamBuilder<List>(
           stream: _myStreamController.stream,
-          builder:(context,snapshot){
-            if(snapshot.hasData){
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
               final dataList = snapshot.data;
               return Stack(
                 children: [
                   FutureBuilder(
                     future: Utils.getImagePath(),
-                    builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+                    builder: (BuildContext context,
+                        AsyncSnapshot<String?> snapshot) {
                       if (!snapshot.hasData) {
                         return Container(); // 如果还没有保存过图片路径，则显示空容器。
                       }
@@ -109,8 +110,8 @@ class _MyViewState extends State<MyView> {
                               fit: BoxFit.cover,
                             ),
                           ),
-                          child:Container() // 页面的其余代码。
-                      );
+                          child: Container() // 页面的其余代码。
+                          );
                     },
                   ),
                   // Image.network('https://i0.hdslb.com/bfs/article/6e174bafee9c4defcb40daf45e4bf27ec00caddc.png@942w_progressive.webp'
@@ -119,24 +120,28 @@ class _MyViewState extends State<MyView> {
                   //   width: double.infinity,
                   // ),
                   ListView.builder(
-
                       controller: _viewScrollController,
                       itemCount: dataList!.length,
-                      itemBuilder: (context,index){
-                        if(index==dataList.length-1){
+                      itemBuilder: (context, index) {
+                        if (index == dataList.length - 1) {
                           return Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              SizedBox(height: SU.h(5),),
+                              SizedBox(
+                                height: SU.h(5),
+                              ),
                               GlassMorphism(
-                                blur:10,
-                                opacity:0.2,
+                                blur: 10,
+                                opacity: 0.2,
                                 child: ListTile(
                                   title: Text(dataList[index].title),
                                   subtitle: Text(dataList[index].date),
-                                  onTap: (){
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
-                                      return NewsPaperContent0(url: dataList[index].link);
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                      return NewsPaperContent0(
+                                          url: dataList[index].link);
                                     }));
                                   },
                                 ),
@@ -144,20 +149,24 @@ class _MyViewState extends State<MyView> {
                               mw_cumtNewsTitleText(),
                             ],
                           );
-                        }
-                        else{
+                        } else {
                           return Column(
                             children: [
-                              SizedBox(height: SU.h(5),),
+                              SizedBox(
+                                height: SU.h(5),
+                              ),
                               GlassMorphism(
-                                blur:20,
-                                opacity:0.1,
+                                blur: 20,
+                                opacity: 0.1,
                                 child: ListTile(
                                   title: Text(dataList[index].title),
                                   subtitle: Text(dataList[index].date),
-                                  onTap: (){
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context){
-                                      return NewsPaperContent0(url: dataList[index].link);
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                      return NewsPaperContent0(
+                                          url: dataList[index].link);
                                     }));
                                   },
                                 ),
@@ -165,8 +174,7 @@ class _MyViewState extends State<MyView> {
                             ],
                           );
                         }
-                      }
-                  ),
+                      }),
                   Positioned(
                     bottom: 10,
                     right: 10,
@@ -184,12 +192,11 @@ class _MyViewState extends State<MyView> {
                   ),
                 ],
               );
-            }else{
+            } else {
               return mw_cumtNewsTitleText();
             }
-          }
-      ),
-      onRefresh: ()async{
+          }),
+      onRefresh: () async {
         _loadData();
         //ignore:avoid_print
         print('下拉刷新');
