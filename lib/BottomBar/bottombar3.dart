@@ -30,7 +30,6 @@ class _BottomBar3State extends State<BottomBar3> {
   _pickerGallery() async {
     XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      print('imagepath is:${image.path}');
       imagePath = image.path;
       _saveImagePath(image.path); //保存图片路径
     }
@@ -45,7 +44,7 @@ class _BottomBar3State extends State<BottomBar3> {
 
   //读取图片路径
   Future<String?> _getImagePath() async {
-    final SharedPreferences prefs = await _prefs;
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString('imagePath');
   }
 

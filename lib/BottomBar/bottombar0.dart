@@ -12,6 +12,7 @@ class BottomBar0 extends StatefulWidget {
 }
 
 class _BottomBar0State extends State<BottomBar0> with SingleTickerProviderStateMixin {
+
   late TabController _tabController;
   List ntype = ['视点新闻', '学术聚焦', '学术报告', '人文课堂', '信息公告', '校园咨询'];
   @override
@@ -44,7 +45,6 @@ class _BottomBar0State extends State<BottomBar0> with SingleTickerProviderStateM
 
 // appBar
 AppBar appBar(TabController tabController, VoidCallback toFirePage,VoidCallback toNewsBeforePage) {
-  List ntype = ['视点新闻', '学术聚焦', '学术报告', '人文课堂', '信息公告', '校园咨询'];
   return AppBar(
     toolbarHeight: SU.h(40),
     backgroundColor: Colors.blue[900],

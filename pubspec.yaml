@@ -41,7 +41,7 @@ dependencies:
   animated_text_kit: ^4.2.2
   flutter_screenutil: ^5.7.0
   image_picker: ^0.8.7+1
-  flutter_cached_pdfview: ^0.4.0-nullsafety
+  flutter_cached_pdfview: ^0.4.0-nullsafety #pdf阅读
   shared_preferences: ^2.0.20
   chewie: ^1.4.0
   video_player: ^2.6.0

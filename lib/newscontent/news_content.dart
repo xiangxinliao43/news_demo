@@ -23,7 +23,7 @@ class _NewsPaperContent0State extends State<NewsPaperContent0> {
     while (!success && retryCount < 20) {
       try {
         Response response = await Dio().get('http://118.195.147.37:5672/news/content?link=${widget.url}');
-        print(response.data is Map);//true
+
         var _contentsContent = response.data['contents'];
         _contentsData = response.data;
         setState(() {

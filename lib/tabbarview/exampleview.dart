@@ -8,7 +8,6 @@ import 'package:news_demo/newscontent/news_content.dart';
 import 'package:news_demo/selfwidget/witgt_self.dart';
 import 'package:news_demo/service/backgroundimage.dart';
 
-
 class MyView extends StatefulWidget {
   final String type;
   const MyView({Key? key, required this.type}) : super(key: key);
@@ -117,57 +116,32 @@ class _MyViewState extends State<MyView> {
                       controller: _viewScrollController,
                       itemCount: dataList!.length,
                       itemBuilder: (context, index) {
-                        if (index == dataList.length - 1) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                height: SU.h(5),
+
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: SU.h(5),
+                            ),
+                            GlassMorphism(
+                              blur: 10,
+                              opacity: 0.2,
+                              child: ListTile(
+                                title: Text(dataList[index].title),
+                                subtitle: Text(dataList[index].date),
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) {
+                                            return NewsPaperContent0(
+                                                url: dataList[index].link);
+                                          }));
+                                },
                               ),
-                              GlassMorphism(
-                                blur: 10,
-                                opacity: 0.2,
-                                child: ListTile(
-                                  title: Text(dataList[index].title),
-                                  subtitle: Text(dataList[index].date),
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) {
-                                      return NewsPaperContent0(
-                                          url: dataList[index].link);
-                                    }));
-                                  },
-                                ),
-                              ),
-                              mw_cumtNewsTitleText(),
-                            ],
-                          );
-                        } else {
-                          return Column(
-                            children: [
-                              SizedBox(
-                                height: SU.h(5),
-                              ),
-                              GlassMorphism(
-                                blur: 20,
-                                opacity: 0.1,
-                                child: ListTile(
-                                  title: Text(dataList[index].title),
-                                  subtitle: Text(dataList[index].date),
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) {
-                                      return NewsPaperContent0(
-                                          url: dataList[index].link);
-                                    }));
-                                  },
-                                ),
-                              ),
-                            ],
-                          );
-                        }
+                            ),
+                            index == dataList.length - 1?mw_cumtNewsTitleText():Container(),
+                          ],
+                        );
                       }),
                   Positioned(
                     bottom: 10,

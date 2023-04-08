@@ -47,7 +47,7 @@ Widget mw_circleloading(){
 }
 
 //搜索框
-Widget mw_search(){
+Widget mw_search() {
   return TextField(
     style: TextStyle(fontSize: SU.sp(20)),
     decoration: InputDecoration(

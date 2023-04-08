@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class Newsbefore extends StatefulWidget {
   const Newsbefore({Key? key}) : super(key: key);
 
